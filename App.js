@@ -1,71 +1,46 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import { getDecks } from './utils/api'
+import { TabNavigator, StackNavigator } from 'react-navigation'
+import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons'
+import Decks from './components/Decks'
+import AddDeck from './components/AddDeck'
 
+const Tabs = TabNavigator({
+  Decks: {
+    screen: Decks, 
+    navigationOptions: {
+      tabBarLabel: 'Decks', 
+      tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='cards' size={30} color={tintColor} />
+    },
+  },
+  AddDeck: {
+    screen: AddDeck,
+    navigationOptions: {
+      tabBarLabel: 'Add Deck', 
+      tabBarIcon: ({ tintColor }) => <Entypo name='plus' size={30} color={tintColor} />
+    }
+  }
+}, {
+  navigationOptions: {
+    header: null,
+  },
+  tabBarOptions: {
+    backgroundColor: "#333",
+  },
+})
 
+const MainNavigator = StackNavigator({
+  Home: {
+    screen: Tabs, 
+  },
+})
 
 export default class App extends React.Component {
-
-  state = {
-    decks: {},
-  }
-
-  componentDidMount() {
-    getDecks()
-      .then( (data) => {
-        this.setState( (state) => ({
-          decks: data
-        }))
-      })
-  }
-
   render() {
-    const { decks } = this.state
-
     return (
-      <View style={styles.container}>
-        { Object.keys(decks).map( (deck) => {
-              return (
-                <TouchableOpacity 
-                  key={decks[deck].title} 
-                  style={styles.deckButton}
-                >
-                  <Text style={styles.deckTitle} > { decks[deck].title } </Text>
-                  <Text style={styles.deckQuestions} > 
-                    { decks[deck].questions.length } { decks[deck].questions.length === 1 ? 'question' : 'questions' } 
-                  </Text>
-                </TouchableOpacity>
-              )
-            })
-        }
+      <View style={{flex: 1}} > 
+        <MainNavigator />
       </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  deckButton: {
-    flex: 1,
-    alignSelf: 'stretch',
-    height: 50,
-    backgroundColor: '#fff', 
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderBottomColor: '#333',
-    borderBottomWidth: 2,
-  }, 
-  deckTitle: {
-    fontSize: 42, 
-    color: '#333'
-  },
-  deckQuestions: {
-    fontSize: 20, 
-    color: '#666'
-  }
-})
