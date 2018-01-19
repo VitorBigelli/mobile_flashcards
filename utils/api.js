@@ -24,6 +24,15 @@ const decks = {
         answer: 'The combination of a function and the lexical environment within which that function was declared.'
       }
     ]
+  },
+  Redux: {
+    title: 'Reduxx',
+    questions: [
+      {
+        question: 'What is a reducer?',
+        answer: "Reducers specify how the application's state changes in response to actions sent to the store."
+      }
+    ]
   }
 }
 

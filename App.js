@@ -1,9 +1,10 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native'
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons'
 import Decks from './components/Decks'
 import AddDeck from './components/AddDeck'
+import { white, red } from './utils/colors'
 
 const Tabs = TabNavigator({
   Decks: {
@@ -25,7 +26,10 @@ const Tabs = TabNavigator({
     header: null,
   },
   tabBarOptions: {
-    backgroundColor: "#333",
+    activeTintColor: Platform.OS === 'ios' ? red : white,
+    style: {
+      backgroundColor: Platform.OS === 'ios' ? white : red, 
+    }
   },
 })
 

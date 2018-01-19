@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { getDecks } from '../utils/api'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
+import { white, red, gray } from '../utils/colors'
 
 class Decks extends Component {
 
@@ -44,28 +45,25 @@ class Decks extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    backgroundColor: white,
+    alignItems: 'stretch',
   },
   deckButton: {
     flex: 1,
-    alignSelf: 'stretch',
-    height: 50,
-    alignSelf: 'stretch',
-    backgroundColor: '#fff', 
+    height: 30,
+    backgroundColor: white, 
     alignItems: 'center',
     justifyContent: 'center',
-    borderBottomColor: '#333',
-    borderBottomWidth: 2,
+    borderBottomColor: gray,
+    borderBottomWidth: 1,
   }, 
   deckTitle: {
     fontSize: 42, 
-    color: '#333'
+    color: gray,
   },
   deckQuestions: {
     fontSize: 20, 
-    color: '#666'
+    color: gray
   }
 })
 
