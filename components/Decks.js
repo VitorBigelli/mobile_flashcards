@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { getDecks } from '../utils/api'
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
+import { initAPI, DECKS_STORAGE_KEY } from '../utils/api'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, AsyncStorage } from 'react-native'
 import { white, red, gray } from '../utils/colors'
+import Deck from './Deck'
 
 class Decks extends Component {
 
@@ -10,7 +11,10 @@ class Decks extends Component {
   }
 
   componentDidMount() {
-    getDecks()
+
+    AsyncStorage.removeItem(DECKS_STORAGE_KEY)
+
+    initAPI()
       .then( (data) => {
         this.setState( (state) => ({
           decks: data
@@ -22,22 +26,28 @@ class Decks extends Component {
     const { decks } = this.state
 
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'stretch'}}>
+
         { Object.keys(decks).map( (deck) => {
               return (
-                <TouchableOpacity 
-                  key={decks[deck].title} 
-                  style={styles.deckButton}
-                >
-                  <Text style={styles.deckTitle} > { decks[deck].title } </Text>
-                  <Text style={styles.deckQuestions} > 
-                    { decks[deck].questions.length } { decks[deck].questions.length === 1 ? 'question' : 'questions' } 
-                  </Text>
-                </TouchableOpacity>
+                  <TouchableOpacity 
+                    key={decks[deck].title} 
+                    style={styles.deckButton}
+                    onPress={ () => this.props.navigation.navigate(
+                      'Deck',
+                      { title: decks[deck].title }
+                      )}
+                  >
+                    <Text style={styles.deckTitle} > { decks[deck].title } </Text>
+                    <Text style={styles.deckQuestions} > 
+                      { decks[deck].questions.length } { decks[deck].questions.length === 1 ? 'question' : 'questions' } 
+                    </Text>
+                  </TouchableOpacity>
               )
             })
         }
-      </View>
+
+      </ScrollView>
     )
   }
 }
@@ -46,16 +56,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: white,
-    alignItems: 'stretch',
   },
   deckButton: {
     flex: 1,
-    height: 30,
+    height: 100,
     backgroundColor: white, 
     alignItems: 'center',
     justifyContent: 'center',
     borderBottomColor: gray,
     borderBottomWidth: 1,
+    alignSelf: 'stretch',
   }, 
   deckTitle: {
     fontSize: 42, 

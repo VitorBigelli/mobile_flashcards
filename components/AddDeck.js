@@ -7,14 +7,16 @@ import {
 	TouchableOpacity,
 	TextInput,
 	KeyboardAvoidingView,
+	Keyboard
 } from 'react-native'
 import { saveDeckTitle } from '../utils/api'
 import { gray, white } from '../utils/colors'
+import { NavigationActions } from 'react-navigation'
 
 class NewDeck extends Component {
 
 	state = {
-		input: '', 
+		input: '',
 	}
 
 	handleTextChange = (input) => {
@@ -24,12 +26,15 @@ class NewDeck extends Component {
 		}))
 	}
 
-	submitDeck() {
+	submitDeck = () => {
 		saveDeckTitle(this.state.input)
+			.then( () => {
+				this.setState( () => ({
+					input: '',
+				}))
+			})
 
-		this.setState( () => ({
-			input: '',
-		}))
+		Keyboard.dismiss()
 
 		this.props.navigation.dispatch(NavigationActions.back({key: 'AddDeck'}))
 	}

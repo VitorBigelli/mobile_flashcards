@@ -1,8 +1,8 @@
 import { AsyncStorage } from 'react-native'
 
-const DECKS_STORAGE_KEY = "MobileFlashcards:decks"
+export const DECKS_STORAGE_KEY = "MobileFlashcards:decks"
 
-const decks = {
+const defaultDecks = {
   React: {
     title: 'React',
     questions: [
@@ -26,7 +26,7 @@ const decks = {
     ]
   },
   Redux: {
-    title: 'Reduxx',
+    title: 'Redux',
     questions: [
       {
         question: 'What is a reducer?',
@@ -36,28 +36,45 @@ const decks = {
   }
 }
 
+export function initAPI() {
+  return AsyncStorage.getItem(DECKS_STORAGE_KEY)
+            .then( (result) => {
+              if (result) {
+                return getDecks()
+              }
+              else {
+                setDefaultDecks()
+                return getDecks()
+              }
+            })
+
+}
+
+function setDefaultDecks() {
+  AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(defaultDecks))
+}
+
 export function getDecks () { 
-
-	AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(decks))
-
-	return AsyncStorage.getItem(DECKS_STORAGE_KEY)
-		.then( (data) => {
-			return JSON.parse(data)
-		})
+  return AsyncStorage.getItem(DECKS_STORAGE_KEY)
+    .then( (data) => {
+        return JSON.parse(data)
+    })
 }
 
 export function getDeck(id) {
-	return AsyncStorage.getItem(DECKS_STORAGE_KEY)
-		.then( (data) => {
-			return data[id]
-		})
+	return getDecks().then( (decks) => {
+    return decks[id]
+  })
 }
 
 export function saveDeckTitle(title) {
-	return AsyncStorage.mergeItem( DECKS_STORAGE_KEY, JSON.stringify({
-				[title]: { title: title, questions: [] }
-			}
-			))
+  
+  const deck = {
+    title: title,
+    questions: []
+  }
+
+  AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify({[title]:deck}))
 }
 
 export function addCardToDeck({ title, card }) {
