@@ -27,7 +27,7 @@ class NewDeck extends Component {
 	}
 
 	submitDeck = () => {
-		saveDeckTitle(this.state.input)
+		saveDeckTitle(JSON.stringify(this.state.input))
 			.then( () => {
 				this.setState( () => ({
 					input: '',

@@ -45,7 +45,7 @@ class Decks extends Component {
                   >
                     <Text style={styles.deckTitle} > { decks[deck].title } </Text>
                     <Text style={styles.deckQuestions} > 
-                      { decks[deck].questions.length } { decks[deck].questions.length === 1 ? 'question' : 'questions' } 
+                      { decks[deck].questions.length } { decks[deck].questions.length === 1 ? 'card' : 'cards' } 
                     </Text>
                   </TouchableOpacity>
               )
