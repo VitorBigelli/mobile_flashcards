@@ -17,6 +17,7 @@ import { Constants } from 'expo'
 import { createStore } from 'redux'
 import { Provider  } from 'react-redux'
 import reducer from './reducers'
+import AddCard from './components/AddCard'
 
 const store = createStore(reducer)
 
@@ -62,6 +63,15 @@ const MainNavigator = StackNavigator({
   },
   Deck: {
     screen: Deck, 
+    navigationOptions: {
+      headerTintColor: white, 
+      headerStyle: {
+        backgroundColor: red,
+      }
+    }
+  },
+  AddCard: {
+    screen: AddCard, 
     navigationOptions: {
       headerTintColor: white, 
       headerStyle: {

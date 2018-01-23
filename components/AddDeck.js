@@ -12,6 +12,7 @@ import {
 import { saveDeckTitle } from '../utils/api'
 import { gray, white } from '../utils/colors'
 import { NavigationActions } from 'react-navigation'
+import SubmitBtn from './SubmitBtn'
 
 class NewDeck extends Component {
 
@@ -50,9 +51,7 @@ class NewDeck extends Component {
 					value={input}
 					onChange={this.handleTextChange}
 				/>
-				<TouchableOpacity onPress={ () => this.submitDeck() } style={styles.submitBtn} >
-					<Text style={styles.submitBtnText} > Submit </Text>
-				</TouchableOpacity>
+				<SubmitBtn handle={this.submitDeck} />
 			</KeyboardAvoidingView>
 		)
 	}
@@ -78,19 +77,6 @@ const styles = StyleSheet.create({
 		borderColor: gray,
 		margin: 30,
 	},
-	submitBtn: {
-		backgroundColor: gray, 
-		borderRadius: 7,
-		height: 50,
-		width: 150,
-		padding: 8,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	submitBtnText: {
-		color: white,
-		fontSize: 20,
-	}
 })
 
 export default NewDeck

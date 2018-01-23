@@ -28,11 +28,19 @@ class Deck extends Component {
 					<Text style={styles.subHeader} > { deck.questions.length } cards </Text>
 				</View>
 				<View style={styles.buttonsContainer} >
-					<TouchableOpacity style={[styles.btn, {backgroundColor: white }]} > 
+					<TouchableOpacity 
+						style={[styles.btn, {backgroundColor: white }]}
+						onPress={ () => this.props.navigation.navigate(
+							'AddCard', 
+							{'title': 'Add card to ' + title })
+						}
+					> 
 						<Text style={{color: gray}}> Add Card </Text>
 					</TouchableOpacity> 
 
-					<TouchableOpacity style={[styles.btn, {backgroundColor: gray }]}> 
+					<TouchableOpacity 
+						style={[styles.btn, {backgroundColor: gray }]}
+					> 
 						<Text style={{color: white}} > Start Quiz </Text>
 					</TouchableOpacity>
 				</View>
