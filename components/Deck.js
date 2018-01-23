@@ -5,6 +5,7 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 } from 'react-native'
+import { connect } from 'react-redux'
 
 class Deck extends Component {
 
@@ -26,4 +27,13 @@ class Deck extends Component {
 	}
 }
 
-export default Deck
+function mapStateToProps(state, {navigation}) {
+	const { title } = navigation.state.params
+
+	return {
+		title,
+		deck: state[title]
+	}
+}
+
+export default connect(mapStateToProps)(Deck)

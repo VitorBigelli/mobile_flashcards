@@ -3,6 +3,8 @@ import { initAPI, DECKS_STORAGE_KEY } from '../utils/api'
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, AsyncStorage } from 'react-native'
 import { white, red, gray } from '../utils/colors'
 import Deck from './Deck'
+import { receiveDecks } from '../actions'
+import { connect } from 'react-redux'
 
 class Decks extends Component {
 
@@ -12,9 +14,12 @@ class Decks extends Component {
 
   componentDidMount() {
 
+    const { dispatch } = this.props
+
     AsyncStorage.removeItem(DECKS_STORAGE_KEY)
 
     initAPI()
+      .then( (decks) => dispatch(receiveDecks(decks)))
       .then( (data) => {
         this.setState( (state) => ({
           decks: data
@@ -23,7 +28,7 @@ class Decks extends Component {
   }
 
   render() {
-    const { decks } = this.state
+    const { decks } = this.props
 
     return (
       <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'stretch'}}>
@@ -77,4 +82,10 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Decks
+function mapStateToProps(decks) {
+  return {
+    decks
+  }
+}
+
+export default connect(mapStateToProps)(Decks)

@@ -14,11 +14,16 @@ import AddDeck from './components/AddDeck'
 import Deck from './components/Deck'
 import { white, red } from './utils/colors'
 import { Constants } from 'expo'
+import { createStore } from 'redux'
+import { Provider  } from 'react-redux'
+import reducer from './reducers'
 
-function FlashcardsStatusBar ({backgroundColor, ... props}) {
+const store = createStore(reducer)
+
+function FlashcardsStatusBar ({backgroundColor, barStyle, ... props}) {
   return (
     <View style={{backgroundColor, height: Constants.statusBarHeight }} >
-      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+      <StatusBar translucent backgroundColor={backgroundColor} barStyle='dark-content' {...props} />
     </View>
   ) 
 }
@@ -69,10 +74,12 @@ const MainNavigator = StackNavigator({
 export default class App extends React.Component {
   render() {
     return (
-      <View style={{flex: 1}} > 
-      <FlashcardsStatusBar  backgroundColor={white} barStyle='light-content' />
-        <MainNavigator />
-      </View>
+      <Provider store={store}>
+        <View style={{flex: 1}} > 
+        <FlashcardsStatusBar  backgroundColor={white} barStyle='light-content' />
+          <MainNavigator />
+        </View>
+      </Provider>
     )
   }
 }
