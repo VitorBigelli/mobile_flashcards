@@ -3,11 +3,13 @@ import {
 	View, 
 	Text,
 	StyleSheet, 
-	TouchableOpacity
+	TouchableOpacity,
+	Animated
 } from 'react-native'
 import { getDeck } from '../utils/api'
 import { connect } from 'react-redux'
 import SubmitBtn from './SubmitBtn'
+import Card from './Card'
 import { red, lightGreen, lightRed, green, white} from '../utils/colors'
 
 
@@ -15,7 +17,11 @@ class Quiz extends Component {
 
 	constructor(props) {
 		super(props)
-		this.state = { score: 0, currentQuestion: 0, showAnswer: false }
+		this.state = {
+			score: 0, 
+			currentQuestion: 0, 
+			showAnswer: false ,
+		}
 	}
 
 	flipCard = () => {
@@ -28,7 +34,6 @@ class Quiz extends Component {
 		const { deck, navigation } = this.props 
 
 		if ( currentQuestion === (deck.questions.length-1)) {
-			console.log('Last Card')
 			switch(result) {
 				case 'correct': 
 					navigation.navigate( 'QuizResult', { title: 'Result', score: score+1, deck: deck.title } )
@@ -50,8 +55,7 @@ class Quiz extends Component {
 					break
 				case 'incorrect': 
 					this.setState( (state) => ({
-						showAnswer: false,
-						currentQuestion: state.currentQuestion+1,
+						showAnswer: false,						currentQuestion: state.currentQuestion+1,
 					}))					
 					break
 				default:
@@ -63,65 +67,15 @@ class Quiz extends Component {
 	render() {
 		const { deck } = this.props
 		const { currentQuestion, showAnswer } = this.state
-		console.log(currentQuestion)
+
 		return (
-			<View style={styles.container} > 
-				<View style={styles.scoreContainer}> 
-					<Text style={styles.score}> { currentQuestion+1 } / {deck.questions.length} </Text>
-				</View>
-
-				{ !showAnswer && 
-				<View style={styles.questionContainer}>
-					<Text style={styles.question} adjustFontSizeToFit={true}> 
-						{ deck && deck.questions[currentQuestion].question }
-					</Text>
-
-					<TouchableOpacity  
-						style={styles.flipCardBtn} 
-						onPress={ () => this.flipCard() }
-					>
-						<Text style={styles.flipBtnText} > Answer </Text>
-					</TouchableOpacity>
-				</View>
-				}
-
-				{ showAnswer &&
-				<View>
-					<View style={styles.questionContainer}>
-						<Text style={styles.answer} adjustFontSizeToFit={true}> 
-							{ deck && deck.questions[currentQuestion].answer }
-						</Text>
-						<View style={styles.flipCardBtnContainer} >
-							<TouchableOpacity  
-								style={styles.flipCardBtn} 
-								onPress={ () => this.flipCard() }
-							>
-								<Text style={styles.flipBtnText} > Question </Text>
-							</TouchableOpacity>
-						</View>
-
-					</View>
-					<View style={styles.buttonsContainer} >
-						<TouchableOpacity 
-							style={[styles.correctBtn, styles.button]} 
-							onPress={ () => this.changeCard('correct')}
-						>
-							<Text style={styles.correctBtnText} > Correct </Text>
-						</TouchableOpacity>
-
-						<TouchableOpacity 
-							style={[styles.incorrectBtn, styles.button]}
-							onPress={ () => this.changeCard('incorrect')}
-						>
-							<Text style={styles.incorrectBtnText} > Incorrect </Text>
-						</TouchableOpacity>
-					</View>
-				</View>
-				}
-
-				
-				
-			</View>
+			<Card 
+				currentQuestion={currentQuestion}
+				showAnswer={showAnswer}
+				deck={deck}
+				changeCard={(result) => this.changeCard(result)}
+				flipCard={() => this.flipCard()}
+			/>
 		)
 	}
 }
