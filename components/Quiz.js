@@ -43,12 +43,14 @@ class Quiz extends Component {
 			switch(result) {
 				case 'correct': 
 					this.setState( (state) => ({
+						showAnswer: false,
 						currentQuestion: state.currentQuestion+1,
 						score: state.score+1,
 					}))
 					break
 				case 'incorrect': 
 					this.setState( (state) => ({
+						showAnswer: false,
 						currentQuestion: state.currentQuestion+1,
 					}))					
 					break
@@ -83,38 +85,42 @@ class Quiz extends Component {
 				</View>
 				}
 
-				{ showAnswer && 
-				<View style={styles.questionContainer}>
-					<Text style={styles.answer} adjustFontSizeToFit={true}> 
-						{ deck && deck.questions[currentQuestion].answer }
-					</Text>
-					<View style={styles.flipCardBtnContainer} >
-						<TouchableOpacity  
-							style={styles.flipCardBtn} 
-							onPress={ () => this.flipCard() }
+				{ showAnswer &&
+				<View>
+					<View style={styles.questionContainer}>
+						<Text style={styles.answer} adjustFontSizeToFit={true}> 
+							{ deck && deck.questions[currentQuestion].answer }
+						</Text>
+						<View style={styles.flipCardBtnContainer} >
+							<TouchableOpacity  
+								style={styles.flipCardBtn} 
+								onPress={ () => this.flipCard() }
+							>
+								<Text style={styles.flipBtnText} > Question </Text>
+							</TouchableOpacity>
+						</View>
+
+					</View>
+					<View style={styles.buttonsContainer} >
+						<TouchableOpacity 
+							style={[styles.correctBtn, styles.button]} 
+							onPress={ () => this.changeCard('correct')}
 						>
-							<Text style={styles.flipBtnText} > Question </Text>
+							<Text style={styles.correctBtnText} > Correct </Text>
+						</TouchableOpacity>
+
+						<TouchableOpacity 
+							style={[styles.incorrectBtn, styles.button]}
+							onPress={ () => this.changeCard('incorrect')}
+						>
+							<Text style={styles.incorrectBtnText} > Incorrect </Text>
 						</TouchableOpacity>
 					</View>
 				</View>
 				}
 
-
-				<View style={styles.buttonsContainer} >
-					<TouchableOpacity 
-						style={[styles.correctBtn, styles.button]} 
-						onPress={ () => this.changeCard('correct')}
-					>
-						<Text style={styles.correctBtnText} > Correct </Text>
-					</TouchableOpacity>
-
-					<TouchableOpacity 
-						style={[styles.incorrectBtn, styles.button]}
-						onPress={ () => this.changeCard('incorrect')}
-					>
-						<Text style={styles.incorrectBtnText} > Incorrect </Text>
-					</TouchableOpacity>
-				</View>
+				
+				
 			</View>
 		)
 	}
@@ -142,7 +148,6 @@ const styles = StyleSheet.create({
 	question: {
 		fontSize: 42,
 		maxHeight: 200,
-		backgroundColor: white,
 	},
 	answer: {
 		fontSize: 25, 
