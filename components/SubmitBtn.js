@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import { gray, white } from '../utils/colors'
 
-export default function SubmitBtn (handle) {
+export default function SubmitBtn ({handle}) {
 	return (
 		<TouchableOpacity onPress={ () => handle() } style={styles.submitBtn} >
 			<Text style={styles.submitBtnText} > Submit </Text>

@@ -7,37 +7,49 @@ import {
 	TouchableOpacity,
 	TextInput,
 	KeyboardAvoidingView,
-	Keyboard
+	Keyboard,
+	Alert
 } from 'react-native'
 import { saveDeckTitle } from '../utils/api'
 import { gray, white } from '../utils/colors'
 import { NavigationActions } from 'react-navigation'
 import SubmitBtn from './SubmitBtn'
+import { connect } from 'react-redux'
 
 class NewDeck extends Component {
 
-	state = {
-		input: '',
-	}
-
-	handleTextChange = (input) => {
-
-		this.setState( () => ({
-			input
-		}))
+	constructor(props) {
+		super(props)
+		this.state = { input: '',}
 	}
 
 	submitDeck = () => {
-		saveDeckTitle(JSON.stringify(this.state.input))
-			.then( () => {
-				this.setState( () => ({
-					input: '',
-				}))
-			})
+		const { input } = this.state
+
+		if (input) {
+			saveDeckTitle(input)
+				.then( () => {
+					this.setState( () => ({
+						input: '',
+					}))
+				})
+				.then( () => {
+					this.props.navigation.dispatch(NavigationActions.navigate({routeName: 'Decks'}))
+				})
+		}
+		else {
+			Alert.alert(
+				'Required field',
+				'You need to fill all the fields in order to submit a new card', 
+				[
+					{text: 'Ok', onPress: () => this.render() }
+				]
+			)
+
+			this.props.navigation.dispatch(NavigationActions.back({key: 'AddDeck'}))
+		}
 
 		Keyboard.dismiss()
-
-		this.props.navigation.dispatch(NavigationActions.back({key: 'AddDeck'}))
 	}
 
 	render() {
@@ -45,11 +57,11 @@ class NewDeck extends Component {
 
 		return (
 			<KeyboardAvoidingView behavior='padding' style={styles.container}> 
-				<Text style={styles.header} > What's is the title of your deck? </Text>
+				<Text style={styles.header} > What is the title of your deck? </Text>
 				<TextInput 
 					style={styles.textInput}
-					value={input}
-					onChange={this.handleTextChange}
+					value={this.state.input}
+					onChangeText={ (input) => this.setState({input})}
 				/>
 				<SubmitBtn handle={this.submitDeck} />
 			</KeyboardAvoidingView>
@@ -79,4 +91,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default NewDeck
+export default connect()(NewDeck)

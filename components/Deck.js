@@ -32,7 +32,7 @@ class Deck extends Component {
 						style={[styles.btn, {backgroundColor: white }]}
 						onPress={ () => this.props.navigation.navigate(
 							'AddCard', 
-							{'title': 'Add card to ' + title })
+							{'title': 'Add Card', deck: deck })
 						}
 					> 
 						<Text style={{color: gray}}> Add Card </Text>
@@ -96,10 +96,10 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, {navigation}) {
 	const { title } = navigation.state.params
-
+	console.log(state)
 	return {
 		title,
-		deck: state[title]
+		deck: state.decks[title]
 	}
 }
 

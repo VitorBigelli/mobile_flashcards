@@ -6,9 +6,15 @@ import {
 	TouchableOpacity,
 	TextInput,
 	KeyboardAvoidingView,
+	Keyboard,
+	Alert
 } from 'react-native'
 import { gray } from '../utils/colors'
 import SubmitBtn from './SubmitBtn'
+import { addCardToDeck } from '../utils/api'
+import { NavigationActions } from 'react-navigation'
+import { connect } from 'react-redux'
+import { addCard } from '../actions'
 
 class AddCard extends Component {
 
@@ -26,7 +32,7 @@ class AddCard extends Component {
 	}
 
 	handleQuestionChange = (input) => {
-		this.setState( (state) => ({
+		this.setState( () => ({
 			question: input
 		}))
 	}
@@ -38,7 +44,42 @@ class AddCard extends Component {
 	}
 
 	submitCard = () => {
-		
+		const { question, answer } = this.state
+		const { deck, dispatch } = this.props
+
+		const card = {
+			question,
+			answer,
+		}
+
+		deck.questions.push(card)
+
+		if (question && answer) {
+			addCardToDeck( deck )
+				.then( (data) => dispatch(addCard(deck.title, card)))
+				.then( () => {
+					this.setState( () => ({
+						question: '', 
+						answer: '',
+					}))
+				})
+				.then( () => this.props.navigation.navigate(
+					'Deck',
+					{ title: deck.title }
+				))
+		}
+
+		else {
+			Alert.alert(
+				'Required field',
+				'You need to fill all the fields in order to submit a new card', 
+				[
+					{text: 'Ok', onPress: () => this.render() }
+				]
+			)
+		}
+
+		Keyboard.dismiss()
 	}
 
 	render() {
@@ -49,14 +90,14 @@ class AddCard extends Component {
 				<TextInput
 					value={question}
 					style={styles.textInput}
-					onChange={this.handleQuestionChange}
+					onChangeText={ (text) => this.handleQuestionChange(text)}
 					placeholder='Question'
 				/> 
 
 				<TextInput 
 					value={answer}
 					style={styles.textInput}
-					onChange={this.handleAnswerChange}
+					onChangeText={ (text) => this.handleAnswerChange(text)}
 					placeholder='Answer'
 				/>
 				<SubmitBtn handle={this.submitCard} />
@@ -81,4 +122,12 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default AddCard
+function mapStateToProps(state, { navigation })  {
+	const { deck } = navigation.state.params
+
+	return {
+		deck: deck,
+	}
+}
+
+export default connect(mapStateToProps)(AddCard)

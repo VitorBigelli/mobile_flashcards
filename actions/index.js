@@ -7,7 +7,9 @@ export const REMOVE_CARD_FROM_DECK = 'REMOVE_CARD_FROM_DECK'
 export function receiveDecks(decks) {
 	return {
 		type: RECEIVE_DECKS,
-		decks
+		data: {
+			decks
+		},
 	}
 }
 
@@ -18,9 +20,10 @@ export function addDeck(deck) {
 	}
 }
 
-export function addCardToDeck(title, card) {
+export function addCard(deck, card) {
 	return {
 		type: ADD_CARD_TO_DECK,
+		deck,
 		card
 	}
 }

@@ -8,32 +8,36 @@ import { connect } from 'react-redux'
 
 class Decks extends Component {
 
-  state = {
-    decks: {},
+  constructor(props) {
+    super(props)
+    this.state = { decks: {}, }
   }
 
   componentDidMount() {
-
     const { dispatch } = this.props
 
-    AsyncStorage.removeItem(DECKS_STORAGE_KEY)
-
     initAPI()
-      .then( (decks) => dispatch(receiveDecks(decks)))
       .then( (data) => {
         this.setState( (state) => ({
           decks: data
         }))
       })
+      .then( () => dispatch(receiveDecks(this.state.decks)))
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.decks != this.state.decks
   }
 
   render() {
-    const { decks } = this.props
+    const { decks } = this.state
 
     return (
       <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'stretch'}}>
 
-        { Object.keys(decks).map( (deck) => {
+        { decks &&
+            Object.keys(decks).map( (deck) => {
+
               return (
                   <TouchableOpacity 
                     key={decks[deck].title} 
@@ -50,8 +54,7 @@ class Decks extends Component {
                   </TouchableOpacity>
               )
             })
-        }
-
+          }
       </ScrollView>
     )
   }
@@ -82,10 +85,4 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapStateToProps(decks) {
-  return {
-    decks
-  }
-}
-
-export default connect(mapStateToProps)(Decks)
+export default connect()(Decks)

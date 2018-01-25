@@ -5,18 +5,20 @@ function decks (state = {}, action) {
 		case RECEIVE_DECKS: 
 			return {
 				...state, 
-				...action.decks
+				...action.data
 			}
 		case ADD_DECK: 
 			return {
 				...state, 
-				[action.title]: action.deck
+				[action.deck.title]: action.deck
 			}
 		case ADD_CARD_TO_DECK: 
+			let questions = state[action.deck].questions
+			questions = questions.push(action.card)
 			return {
 				...state, 
-				...[action.title], 
-					['questions']: action.card
+				...[action.deck],
+				['questions']: questions
 			}
 		default: 
 			return state

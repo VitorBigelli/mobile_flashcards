@@ -21,7 +21,7 @@ import AddCard from './components/AddCard'
 
 const store = createStore(reducer)
 
-function FlashcardsStatusBar ({backgroundColor, barStyle, ... props}) {
+function FlashcardsStatusBar ({backgroundColor, barStyle, ...props}) {
   return (
     <View style={{backgroundColor, height: Constants.statusBarHeight }} >
       <StatusBar translucent backgroundColor={backgroundColor} barStyle='dark-content' {...props} />

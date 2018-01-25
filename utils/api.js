@@ -40,10 +40,13 @@ export function initAPI() {
   return AsyncStorage.getItem(DECKS_STORAGE_KEY)
             .then( (result) => {
               if (result) {
+                console.log('Getting Decks')
                 return getDecks()
               }
               else {
+                console.log('Setting default decks')
                 setDefaultDecks()
+                console.log('Getting Decks')
                 return getDecks()
               }
             })
@@ -51,7 +54,7 @@ export function initAPI() {
 }
 
 function setDefaultDecks() {
-  AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(defaultDecks))
+  return AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(defaultDecks))
 }
 
 export function getDecks () { 
@@ -74,14 +77,12 @@ export function saveDeckTitle(title) {
     questions: []
   }
 
-  AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify({[title]:deck}))
+  return AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify({
+    [title]: deck,
+  }))
+
 }
 
-export function addCardToDeck({ title, card }) {
-	return AsyncStorage.getItem(DECKS_STORAGE_KEY)
-		.then( (results) => {
-			const { data } = JSON.parse(results)
-			data[title] = data[title].questions.push(card)
-			AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(data))
-		})
+export function addCardToDeck(deck) {
+	return AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify({ [deck.title]: deck }))
 }
