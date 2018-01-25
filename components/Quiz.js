@@ -8,7 +8,7 @@ import {
 import { getDeck } from '../utils/api'
 import { connect } from 'react-redux'
 import SubmitBtn from './SubmitBtn'
-import { red, lightGreen, lightRed, green } from '../utils/colors'
+import { red, lightGreen, lightRed, green, white} from '../utils/colors'
 
 
 class Quiz extends Component {
@@ -18,29 +18,90 @@ class Quiz extends Component {
 		this.state = { score: 0, currentQuestion: 0, showAnswer: false }
 	}
 
+	flipCard = () => {
+		this.setState( (state) => ({
+			showAnswer: !state.showAnswer,
+		}))
+	}
+	changeCard = () => {
+		const { currentQuestion } = this.state
+		const { deck } = this.props 
+
+		if ( (currentQuestion+1) === deck.length) {
+			navigation.navigate( QuizResult, { title: 'Result', result: { score, deck }})
+		} else {
+			this.setState( (state) => ({
+				currentQuestion: state.currentQuestion+1,
+			}))
+		}
+	}
+	incrementScore = () => {
+		this.setState( (state) => ({
+			score: state.score+1,
+		}))
+		this.changeCard()
+	}
+	decrementScore = () => {
+		this.setState( (state) => ({
+			score: state.score-1,
+		}))
+		this.changeCard()
+
+	}
 	render() {
 		const { deck } = this.props
 		const { currentQuestion, showAnswer } = this.state
+
 		return (
 			<View style={styles.container} > 
 				<View style={styles.scoreContainer}> 
-					<Text style={styles.score}> { currentQuestion } / {deck.questions.length} </Text>
+					<Text style={styles.score}> { currentQuestion+1 } / {deck.questions.length} </Text>
 				</View>
+
+				{ !showAnswer && 
 				<View style={styles.questionContainer}>
-					<Text style={styles.question} > 
+					<Text style={styles.question} adjustFontSizeToFit={true}> 
 						{ deck && deck.questions[currentQuestion].question }
 					</Text>
 
-					<TouchableOpacity  style={styles.answerBtn} > 
-						<Text style={styles.answerBtnText} > Answer </Text>
+					<TouchableOpacity  
+						style={styles.flipCardBtn} 
+						onPress={ () => this.flipCard() }
+					>
+						<Text style={styles.flipBtnText} > Answer </Text>
 					</TouchableOpacity>
 				</View>
+				}
+
+				{ showAnswer && 
+				<View style={styles.questionContainer}>
+					<Text style={styles.answer} adjustFontSizeToFit={true}> 
+						{ deck && deck.questions[currentQuestion].answer }
+					</Text>
+					<View style={styles.flipCardBtnContainer} >
+						<TouchableOpacity  
+							style={styles.flipCardBtn} 
+							onPress={ () => this.flipCard() }
+						>
+							<Text style={styles.flipBtnText} > Question </Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+				}
+
+
 				<View style={styles.buttonsContainer} >
-					<TouchableOpacity style={[styles.correctBtn, styles.button]} >
+					<TouchableOpacity 
+						style={[styles.correctBtn, styles.button]} 
+						onPress={ () => this.incrementScore()}
+					>
 						<Text style={styles.correctBtnText} > Correct </Text>
 					</TouchableOpacity>
 
-					<TouchableOpacity style={[styles.incorrectBtn, styles.button]} >
+					<TouchableOpacity 
+						style={[styles.incorrectBtn, styles.button]}
+						onPress={ () => this.decrementScore()}
+					>
 						<Text style={styles.incorrectBtnText} > Incorrect </Text>
 					</TouchableOpacity>
 				</View>
@@ -65,16 +126,33 @@ const styles = StyleSheet.create({
 	questionContainer: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		height: 200,
-		marginTop: 50,
+		height: 250,
+		marginTop: 30,
 	}, 
 	question: {
-		fontSize: 45,
+		fontSize: 42,
+		maxHeight: 200,
+		backgroundColor: white,
+	},
+	answer: {
+		fontSize: 25, 
+	},
+	flipCardBtnContainer: {
+		alignItems: 'center',
+		justifyContent: 'center', 
+		height: 50,
+	},
+	flipCardBtn: {
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	flipBtnText: {
+		fontSize: 15,
+		color: red,
 	},
 	buttonsContainer: {
 		alignItems: 'center',
 		justifyContent: 'flex-start',
-		height: 100,
 	},
 	button: {
 		height: 50, 
@@ -98,14 +176,6 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 		color: lightRed,
 	}, 
-	answerBtn: {
-		alignItems: 'center',
-		justifyContent: 'center',
-	}, 
-	answerBtnText: {
-		fontSize: 15,
-		color: red,
-	},
 })
 
 function mapStateToProps(state, { navigation }) {

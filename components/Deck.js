@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 		padding: 8,
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginTop: 10,
+		marginTop: 5,
 	}, 
 	header: {
 		fontSize: 42, 
