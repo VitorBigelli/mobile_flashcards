@@ -23,35 +23,45 @@ class Quiz extends Component {
 			showAnswer: !state.showAnswer,
 		}))
 	}
-	changeCard = () => {
-		const { currentQuestion } = this.state
-		const { deck } = this.props 
+	changeCard = (result) => {
+		const { currentQuestion, score } = this.state
+		const { deck, navigation } = this.props 
 
-		if ( (currentQuestion+1) === deck.length) {
-			navigation.navigate( QuizResult, { title: 'Result', result: { score, deck }})
+		if ( currentQuestion === (deck.questions.length-1)) {
+			console.log('Last Card')
+			switch(result) {
+				case 'correct': 
+					navigation.navigate( 'QuizResult', { title: 'Result', score: score+1, deck: deck.title } )
+					break
+				case 'incorrect': 
+					navigation.navigate( 'QuizResult', { title: 'Result', score: score, deck: deck.title } )
+					break
+				default:
+					return
+			}
 		} else {
-			this.setState( (state) => ({
-				currentQuestion: state.currentQuestion+1,
-			}))
+			switch(result) {
+				case 'correct': 
+					this.setState( (state) => ({
+						currentQuestion: state.currentQuestion+1,
+						score: state.score+1,
+					}))
+					break
+				case 'incorrect': 
+					this.setState( (state) => ({
+						currentQuestion: state.currentQuestion+1,
+					}))					
+					break
+				default:
+					return
+			}
 		}
 	}
-	incrementScore = () => {
-		this.setState( (state) => ({
-			score: state.score+1,
-		}))
-		this.changeCard()
-	}
-	decrementScore = () => {
-		this.setState( (state) => ({
-			score: state.score-1,
-		}))
-		this.changeCard()
 
-	}
 	render() {
 		const { deck } = this.props
 		const { currentQuestion, showAnswer } = this.state
-
+		console.log(currentQuestion)
 		return (
 			<View style={styles.container} > 
 				<View style={styles.scoreContainer}> 
@@ -93,14 +103,14 @@ class Quiz extends Component {
 				<View style={styles.buttonsContainer} >
 					<TouchableOpacity 
 						style={[styles.correctBtn, styles.button]} 
-						onPress={ () => this.incrementScore()}
+						onPress={ () => this.changeCard('correct')}
 					>
 						<Text style={styles.correctBtnText} > Correct </Text>
 					</TouchableOpacity>
 
 					<TouchableOpacity 
 						style={[styles.incorrectBtn, styles.button]}
-						onPress={ () => this.decrementScore()}
+						onPress={ () => this.changeCard('incorrect')}
 					>
 						<Text style={styles.incorrectBtnText} > Incorrect </Text>
 					</TouchableOpacity>
