@@ -32,9 +32,7 @@ class NewDeck extends Component {
 					this.setState( () => ({
 						input: '',
 					}))
-				})
-				.then( () => {
-					this.props.navigation.dispatch(NavigationActions.navigate({routeName: 'Decks'}))
+					this.props.navigation.navigate('Home')
 				})
 		}
 		else {

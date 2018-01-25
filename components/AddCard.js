@@ -63,10 +63,22 @@ class AddCard extends Component {
 						answer: '',
 					}))
 				})
-				.then( () => this.props.navigation.navigate(
-					'Deck',
-					{ title: deck.title }
-				))
+				.then( () => {
+					Alert.alert(
+						'Done',
+						'Card added to ' + deck.title,
+						[
+							{ 
+								text: 'Add another card', 
+								onPress: () => this.render()
+							}, 
+							{
+								text: 'Ok', 
+								onPress: () => this.props.navigation.navigate('Home')
+							}
+						]
+					)
+				})
 		}
 
 		else {

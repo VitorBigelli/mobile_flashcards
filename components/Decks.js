@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { initAPI, DECKS_STORAGE_KEY } from '../utils/api'
+import { initAPI, getDecks, DECKS_STORAGE_KEY } from '../utils/api'
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, AsyncStorage } from 'react-native'
 import { white, red, gray } from '../utils/colors'
 import Deck from './Deck'
@@ -15,14 +15,24 @@ class Decks extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
+    const { decks } = this.state 
 
-    initAPI()
-      .then( (data) => {
-        this.setState( (state) => ({
-          decks: data
-        }))
-      })
-      .then( () => dispatch(receiveDecks(this.state.decks)))
+    if (decks != {}) {
+      initAPI()
+        .then( (data) => {
+          this.setState( (state) => ({
+            decks: data
+          }))
+        })
+        .then( () => dispatch(receiveDecks(this.state.decks)))
+    } else {
+      getDecks()
+        .then( (data) => {
+          this.setState( (state) => ({
+            decks: data
+          })
+        )})
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {

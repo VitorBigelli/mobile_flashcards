@@ -6,11 +6,13 @@ import {
 	TouchableOpacity
 } from 'react-native'
 import { getDeck } from '../utils/api'
+import { connect } from 'react-redux'
 
 class Quiz extends Component {
 
-	state = {
-		deck: {},
+	constructor(state) {
+		super(props)
+		this.state = { currentQuestion: 0, showAnswer: false }
 	}
 
 	componentDidMount() {
@@ -25,7 +27,6 @@ class Quiz extends Component {
 	}
 
 	render() {
-
 		const { deck } = this.state
 
 		return (
@@ -36,4 +37,12 @@ class Quiz extends Component {
 	}
 }
 
-export default Quiz
+function mapStateToProps(state, { navigation }) {
+	const { title } = navigation.state.params
+
+	return {
+		deck: state.decks[title]
+	}
+}
+
+export default connect(mapStateToProps)(Quiz)

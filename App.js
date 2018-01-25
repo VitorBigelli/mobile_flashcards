@@ -18,6 +18,7 @@ import { createStore } from 'redux'
 import { Provider  } from 'react-redux'
 import reducer from './reducers'
 import AddCard from './components/AddCard'
+import Quiz from './components/Quiz'
 
 const store = createStore(reducer)
 
@@ -76,6 +77,15 @@ const MainNavigator = StackNavigator({
       headerTintColor: white, 
       headerStyle: {
         backgroundColor: red,
+      }
+    }
+  },
+  Quiz: {
+    screen: Quiz, 
+    navigationOptions: {
+      headerTintColor: white, 
+      headerStyle: {
+        backgroundColor: red
       }
     }
   }

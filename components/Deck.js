@@ -40,6 +40,9 @@ class Deck extends Component {
 
 					<TouchableOpacity 
 						style={[styles.btn, {backgroundColor: gray }]}
+						onPress={ () => this.props.navigation.navigate(
+							'Quiz',
+							{'title': title})}
 					> 
 						<Text style={{color: white}} > Start Quiz </Text>
 					</TouchableOpacity>
@@ -96,7 +99,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, {navigation}) {
 	const { title } = navigation.state.params
-	console.log(state)
+
 	return {
 		title,
 		deck: state.decks[title]
