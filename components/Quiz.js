@@ -7,31 +7,38 @@ import {
 } from 'react-native'
 import { getDeck } from '../utils/api'
 import { connect } from 'react-redux'
+import SubmitBtn from './SubmitBtn'
 
 class Quiz extends Component {
 
-	constructor(state) {
+	constructor(props) {
 		super(props)
-		this.state = { currentQuestion: 0, showAnswer: false }
-	}
-
-	componentDidMount() {
-		const { deck } = this.props
-
-		getDeck(deck)
-			.then( (data) => {
-				this.setState( (state) => ({
-					deck: data
-				}))
-			})
+		this.state = { score: 0, currentQuestion: 0, showAnswer: false }
 	}
 
 	render() {
-		const { deck } = this.state
-
+		const { deck } = this.props
+		const { currentQuestion, showAnswer } = this.state
 		return (
 			<View> 
-				<Text> {deck.title} </Text>
+				<View> 
+					<Text> { currentQuestion } / {deck.questions.length} </Text>
+				</View>
+				<Text> 
+					{ deck && deck.questions[currentQuestion].question }
+				</Text>
+
+				<TouchableOpacity> 
+					<Text> Answer </Text>
+				</TouchableOpacity>
+
+				<TouchableOpacity>
+					<Text> Correct </Text>
+				</TouchableOpacity>
+
+				<TouchableOpacity>
+					<Text> Incorrect </Text>
+				</TouchableOpacity>
 			</View>
 		)
 	}
