@@ -27,7 +27,7 @@ class AddCard extends Component {
 		const { title } = navigation.state.params
 
 		return {
-			title
+			title,
 		}
 	}
 
@@ -96,6 +96,7 @@ class AddCard extends Component {
 
 	render() {
 		const { question, answer } = this.state
+	  	console.log(this.props.navigation)
 
 		return(
 			<KeyboardAvoidingView behavior='padding' style={styles.container} > 

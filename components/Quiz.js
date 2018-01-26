@@ -24,6 +24,15 @@ class Quiz extends Component {
 		}
 	}
 
+	static navigationOptions = ({navigation}) => {
+		const { title } = navigation.state.params
+
+		return {
+			title: title + ' Quiz', 
+			headerLeft: null
+		}
+	}
+
 	flipCard = () => {
 		this.setState( (state) => ({
 			showAnswer: !state.showAnswer,
@@ -73,7 +82,6 @@ class Quiz extends Component {
 				currentQuestion={currentQuestion}
 				showAnswer={showAnswer}
 				deck={deck}
-				opacity={new Animated.Value(0)}
 				changeCard={(result) => this.changeCard(result)}
 				flipCard={() => this.flipCard()}
 			/>

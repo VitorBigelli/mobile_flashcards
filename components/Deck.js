@@ -4,22 +4,36 @@ import {
 	View,
 	StyleSheet,
 	TouchableOpacity,
+	Platform
 } from 'react-native'
 import { connect } from 'react-redux'
 import { gray, lightGray, white } from '../utils/colors'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 class Deck extends Component {
+
 
 	static navigationOptions = ({ navigation }) => {
 		const { title } = navigation.state.params
 
 		return {
 			title: title,
+			params: navigation.state.params,
+			headerLeft: (
+				<TouchableOpacity
+					style={styles.back}
+					onPress={ ()=> navigation.navigate('Home', { params: navigation.state.params })}
+				>
+					<MaterialCommunityIcons name='cards' size={30} color={white} />
+					{ (Platform.OS === 'ios') && <Text> Decks </Text> }
+				</TouchableOpacity>
+			)
 		}
 	}
 
 	render() {
 	  	const { title, deck } = this.props
+	  	console.log(this.props.navigation.state)
 
 		return (
 			<View style={styles.container} >
@@ -35,7 +49,7 @@ class Deck extends Component {
 							{'title': 'Add Card', deck: deck })
 						}
 					> 
-						<Text style={{color: gray}}> Add Card </Text>
+						<Text style={[styles.btnText, {color: gray}]}> Create New Question </Text>
 					</TouchableOpacity> 
 
 					{ (deck.questions.length != 0) && 
@@ -45,7 +59,7 @@ class Deck extends Component {
 								'Quiz',
 								{'title': title})}
 						> 
-							<Text style={{color: white}} > Start Quiz </Text>
+							<Text style={[styles.btnText, {color: white}]} > Start Quiz </Text>
 						</TouchableOpacity>
 					}
 				</View>
@@ -83,12 +97,15 @@ const styles = StyleSheet.create({
 		borderWidth: 1, 
 		borderColor: gray,
 		height: 50,
-		width: 150, 
+		width: 200, 
 		padding: 8,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginTop: 5,
-	}, 
+	},
+	btnText: {
+		fontSize: 15,
+	},
 	header: {
 		fontSize: 42, 
 		color: gray,
@@ -96,6 +113,16 @@ const styles = StyleSheet.create({
 	subHeader: { 
 		fontSize: 20, 
 		color: lightGray,
+	}, 
+	back: {
+		marginLeft: 20,
+		height: 30,
+		alignItems: 'center', 
+		justifyContent: 'center'
+	},
+	backText: {
+		color: white, 
+		fontSize: 16
 	}
 })
 

@@ -13,7 +13,7 @@ class Card extends Component{
 
 	constructor(props) {
 		super(props)
-		this.state = { opacity: this.props.opacity }
+		this.state = { opacity: new Animated.Value(0) }
 	}
 
 	componentDidMount() {
@@ -21,6 +21,7 @@ class Card extends Component{
 
 		Animated.timing(opacity, { toValue: 1, duration:1000})
 				.start()
+
 	}
 
 	render() {
@@ -28,7 +29,7 @@ class Card extends Component{
 		const { opacity } = this.state
 
 		return (
-			<Animated.View style={[styles.container, { opacity }]} > 
+			<Animated.View style={[styles.container, { opacity }]} ref={ci => this.animatedTextRef = ci} > 
 				<View style={styles.scoreContainer}> 
 					<Text style={styles.score}> { currentQuestion+1 } / {deck.questions.length} </Text>
 				</View>
@@ -54,14 +55,13 @@ class Card extends Component{
 						<Text style={styles.answer} adjustFontSizeToFit={true}> 
 							{ deck && deck.questions[currentQuestion].answer }
 						</Text>
-						<View style={styles.flipCardBtnContainer} >
-							<TouchableOpacity  
-								style={styles.flipCardBtn} 
-								onPress={ () => flipCard() }
-							>
-								<Text style={styles.flipBtnText} > Question </Text>
-							</TouchableOpacity>
-						</View>
+						<TouchableOpacity  
+							style={styles.flipCardBtn} 
+							onPress={ () => flipCard() }
+						>
+							<Text style={styles.flipBtnText} > Question </Text>
+						</TouchableOpacity>
+
 
 					</View>
 					<View style={styles.buttonsContainer} >
@@ -104,6 +104,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		height: 250,
 		marginTop: 30,
+		marginRight: 10,
+		marginLeft: 10,
 	}, 
 	question: {
 		fontSize: 42,
@@ -112,12 +114,8 @@ const styles = StyleSheet.create({
 	answer: {
 		fontSize: 25, 
 	},
-	flipCardBtnContainer: {
-		alignItems: 'center',
-		justifyContent: 'center', 
-		height: 50,
-	},
 	flipCardBtn: {
+		height: 50,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},

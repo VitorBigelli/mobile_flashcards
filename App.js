@@ -66,7 +66,7 @@ const MainNavigator = StackNavigator({
   Deck: {
     screen: Deck, 
     navigationOptions: {
-      headerTintColor: white, 
+      headerTintColor: white,
       headerStyle: {
         backgroundColor: red,
       }
