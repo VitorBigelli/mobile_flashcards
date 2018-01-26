@@ -38,14 +38,16 @@ class Deck extends Component {
 						<Text style={{color: gray}}> Add Card </Text>
 					</TouchableOpacity> 
 
-					<TouchableOpacity 
-						style={[styles.btn, {backgroundColor: gray }]}
-						onPress={ () => this.props.navigation.navigate(
-							'Quiz',
-							{'title': title})}
-					> 
-						<Text style={{color: white}} > Start Quiz </Text>
-					</TouchableOpacity>
+					{ (deck.questions.length != 0) && 
+						<TouchableOpacity 
+							style={[styles.btn, {backgroundColor: gray }]}
+							onPress={ () => this.props.navigation.navigate(
+								'Quiz',
+								{'title': title})}
+						> 
+							<Text style={{color: white}} > Start Quiz </Text>
+						</TouchableOpacity>
+					}
 				</View>
 			</View>
 		)

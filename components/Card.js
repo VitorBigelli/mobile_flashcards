@@ -13,7 +13,7 @@ class Card extends Component{
 
 	constructor(props) {
 		super(props)
-		this.state = { opacity: new Animated.Value(0) }
+		this.state = { opacity: this.props.opacity }
 	}
 
 	componentDidMount() {

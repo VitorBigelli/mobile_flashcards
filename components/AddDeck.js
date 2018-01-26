@@ -80,12 +80,12 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 	},
 	textInput: {
+		marginTop: 10,
 		width: 300, 
 		height: 40,
 		padding: 5, 
 		borderWidth: 1, 
 		borderColor: gray,
-		margin: 30,
 	},
 })
 

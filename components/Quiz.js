@@ -73,6 +73,7 @@ class Quiz extends Component {
 				currentQuestion={currentQuestion}
 				showAnswer={showAnswer}
 				deck={deck}
+				opacity={new Animated.Value(0)}
 				changeCard={(result) => this.changeCard(result)}
 				flipCard={() => this.flipCard()}
 			/>

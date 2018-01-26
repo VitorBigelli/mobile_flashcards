@@ -101,7 +101,7 @@ class AddCard extends Component {
 			<KeyboardAvoidingView behavior='padding' style={styles.container} > 
 				<TextInput
 					value={question}
-					style={styles.textInput}
+					style={[styles.textInput, {marginTop: 50}]}
 					onChangeText={ (text) => this.handleQuestionChange(text)}
 					placeholder='Question'
 				/> 
@@ -122,15 +122,17 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: 'center',
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
 	},
 	textInput: {
 		height: 50, 
-		width: 200,
 		borderColor: gray, 
 		borderWidth: 1, 
-		marginTop: 20, 
-		marginBottom: 20,
+		marginBottom: 5, 
+		marginRight: 20, 
+		marginLeft: 20,
+		width: 250,
+
 	}
 })
 

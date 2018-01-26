@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
 		padding: 8,
 		alignItems: 'center',
 		justifyContent: 'center',
+		marginTop: 20,
 	},
 	submitBtnText: {
 		color: white,
