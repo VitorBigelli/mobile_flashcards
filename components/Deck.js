@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux'
 import { gray, lightGray, white } from '../utils/colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import SubmitBtn from './SubmitBtn'
 
 class Deck extends Component {
 
@@ -32,8 +33,7 @@ class Deck extends Component {
 	}
 
 	render() {
-	  	const { title, deck } = this.props
-	  	console.log(this.props.navigation.state)
+	  	const { title, deck, navigation } = this.props
 
 		return (
 			<View style={styles.container} >
@@ -42,25 +42,27 @@ class Deck extends Component {
 					<Text style={styles.subHeader} > { deck.questions.length } cards </Text>
 				</View>
 				<View style={styles.buttonsContainer} >
-					<TouchableOpacity 
-						style={[styles.btn, {backgroundColor: white }]}
-						onPress={ () => this.props.navigation.navigate(
+
+					<SubmitBtn 
+						backgroundColor={white}
+						color={gray}
+						handle={ () => navigation.navigate(
 							'AddCard', 
 							{'title': 'Add Card', deck: deck })
 						}
-					> 
-						<Text style={[styles.btnText, {color: gray}]}> Create New Question </Text>
-					</TouchableOpacity> 
+						text={'Create New Question'}
+					/> 
 
 					{ (deck.questions.length != 0) && 
-						<TouchableOpacity 
-							style={[styles.btn, {backgroundColor: gray }]}
-							onPress={ () => this.props.navigation.navigate(
+						<SubmitBtn 
+							backgroundColor={gray}
+							color={white}
+							handle={ () => navigation.navigate(
 								'Quiz',
-								{'title': title})}
-						> 
-							<Text style={[styles.btnText, {color: white}]} > Start Quiz </Text>
-						</TouchableOpacity>
+								{'title': title})
+							}
+							text={'Start Quiz'}
+						/>
 					}
 				</View>
 			</View>
@@ -91,20 +93,6 @@ const styles = StyleSheet.create({
 		marginRight: 20, 
 		marginLeft: 20, 
 		padding: 5, 
-	}, 
-	btn: {
-		borderRadius: 7, 
-		borderWidth: 1, 
-		borderColor: gray,
-		height: 50,
-		width: 200, 
-		padding: 8,
-		alignItems: 'center',
-		justifyContent: 'center',
-		marginTop: 5,
-	},
-	btnText: {
-		fontSize: 15,
 	},
 	header: {
 		fontSize: 42, 
@@ -115,6 +103,7 @@ const styles = StyleSheet.create({
 		color: lightGray,
 	}, 
 	back: {
+		flexDirection: 'row',
 		marginLeft: 20,
 		height: 30,
 		alignItems: 'center', 

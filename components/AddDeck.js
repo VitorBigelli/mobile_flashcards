@@ -61,7 +61,12 @@ class NewDeck extends Component {
 					value={this.state.input}
 					onChangeText={ (input) => this.setState({input})}
 				/>
-				<SubmitBtn handle={this.submitDeck} />
+				<SubmitBtn 
+					handle={this.submitDeck}
+					backgroundColor={gray}
+					color={white} 
+					fontSize={20}
+				/>
 			</KeyboardAvoidingView>
 		)
 	}

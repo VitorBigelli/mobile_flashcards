@@ -6,27 +6,24 @@ import {
 } from 'react-native'
 import { gray, white } from '../utils/colors'
 
-export default function SubmitBtn ({handle}) {
+export default function SubmitBtn ({handle, backgroundColor = gray, borderColor = gray, color = white, fontSize = 15, text='Submit'}) {
 	return (
-		<TouchableOpacity onPress={ () => handle() } style={styles.submitBtn} >
-			<Text style={styles.submitBtnText} > Submit </Text>
+		<TouchableOpacity onPress={ () => handle() } style={[styles.submitBtn, { borderColor, backgroundColor }]} >
+			<Text style={{fontSize, color}} > {text} </Text>
 		</TouchableOpacity>
 	)
 }
 
 const styles = StyleSheet.create({
 	submitBtn: {
-		backgroundColor: gray, 
 		borderRadius: 7,
 		height: 50,
-		width: 150,
+		width: 200,
 		padding: 8,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginTop: 20,
-	},
-	submitBtnText: {
-		color: white,
-		fontSize: 20,
+		borderRadius: 7,
+		borderWidth: 1,
 	}
 })

@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { red, lightGreen, lightRed, green } from '../utils/colors'
+import SubmitBtn from './SubmitBtn'
 
 class Card extends Component{
 
@@ -65,19 +66,20 @@ class Card extends Component{
 
 					</View>
 					<View style={styles.buttonsContainer} >
-						<TouchableOpacity 
-							style={[styles.correctBtn, styles.button]} 
-							onPress={ () => changeCard('correct')}
-						>
-							<Text style={styles.correctBtnText} > Correct </Text>
-						</TouchableOpacity>
-
-						<TouchableOpacity 
-							style={[styles.incorrectBtn, styles.button]}
-							onPress={ () => changeCard('incorrect')}
-						>
-							<Text style={styles.incorrectBtnText} > Incorrect </Text>
-						</TouchableOpacity>
+						<SubmitBtn 
+							text={'Correct'}
+							borderColor={green}
+							backgroundColor={green}
+							color={lightGreen}
+							handle={() => changeCard('correct')}
+						/>
+						<SubmitBtn 
+							text={'Incorrect'}
+							borderColor={red}
+							backgroundColor={red}
+							color={lightRed}
+							handle={() => changeCard('incorrect')}
+						/>
 					</View>
 				</View>
 				}				
@@ -126,29 +128,7 @@ const styles = StyleSheet.create({
 	buttonsContainer: {
 		alignItems: 'center',
 		justifyContent: 'flex-start',
-	},
-	button: {
-		height: 50, 
-		width: 150, 
-		borderRadius: 7, 
-		padding: 8,
-		marginBottom: 5,
-		alignItems: 'center',
-		justifyContent: 'center',
-	}, 
-	correctBtn: {
-		backgroundColor: green,
-	},
-	correctBtnText: {
-		fontSize: 15,
-		color: lightGreen,
-	},
-	incorrectBtn: {
-		backgroundColor: red,	}, 
-	incorrectBtnText: {
-		fontSize: 15,
-		color: lightRed,
-	}, 
+	}
 })
 
 export default Card
