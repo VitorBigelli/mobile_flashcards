@@ -29,7 +29,6 @@ class Quiz extends Component {
 
 		return {
 			title: title + ' Quiz', 
-			headerLeft: null
 		}
 	}
 

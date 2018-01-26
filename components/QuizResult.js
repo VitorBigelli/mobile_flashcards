@@ -15,7 +15,6 @@ class QuizResult extends Component{
 
 		return {
 			title: deck + ' Quiz Result', 
-			headerLeft: null
 		}
 	}
 
