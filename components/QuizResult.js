@@ -99,9 +99,7 @@ const styles = StyleSheet.create({
 	}
 })
 
-function mapStateToProps(state, {navigation}) {
-	const { score, deck } = navigation.state.params
-
+function mapStateToProps(state, { score, deck }) {
 	return {
 		score, 
 		deck: state.decks[deck]

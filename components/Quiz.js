@@ -9,6 +9,7 @@ import {
 import { getDeck } from '../utils/api'
 import { connect } from 'react-redux'
 import SubmitBtn from './SubmitBtn'
+import QuizResult from './QuizResult'
 import Card from './Card'
 import { red, lightGreen, lightRed, green, white} from '../utils/colors'
 
@@ -42,50 +43,49 @@ class Quiz extends Component {
 		const { currentQuestion, score } = this.state
 		const { deck, navigation } = this.props 
 
-		if ( currentQuestion === (deck.questions.length-1)) {
-			switch(result) {
-				case 'correct': 
-					navigation.navigate( 'QuizResult', { title: 'Result', score: score+1, deck: deck.title } )
-					break
-				case 'incorrect': 
-					navigation.navigate( 'QuizResult', { title: 'Result', score: score, deck: deck.title } )
-					break
-				default:
-					return
-			}
-		} else {
-			switch(result) {
-				case 'correct': 
-					this.setState( (state) => ({
-						showAnswer: false,
-						currentQuestion: state.currentQuestion+1,
-						score: state.score+1,
-					}))
-					break
-				case 'incorrect': 
-					this.setState( (state) => ({
-						showAnswer: false,						currentQuestion: state.currentQuestion+1,
-					}))					
-					break
-				default:
-					return
-			}
+		switch(result) {
+			case 'correct': 
+				this.setState( (state) => ({
+					showAnswer: false,
+					currentQuestion: state.currentQuestion+1,
+					score: state.score+1,
+				}))
+				break
+			case 'incorrect': 
+				this.setState( (state) => ({
+					showAnswer: false,						
+					currentQuestion: state.currentQuestion+1,
+				}))					
+				break
+			default:
+				return
 		}
 	}
 
 	render() {
-		const { deck } = this.props
-		const { currentQuestion, showAnswer } = this.state
+		const { deck, navigation } = this.props
+		const { currentQuestion, showAnswer, score } = this.state
 
-		return (
-			<Card 
-				currentQuestion={currentQuestion}
-				showAnswer={showAnswer}
-				deck={deck}
-				changeCard={(result) => this.changeCard(result)}
-				flipCard={() => this.flipCard()}
-			/>
-		)
+		if (currentQuestion === deck.questions.length) {
+			return (
+				<QuizResult 
+					score={score}
+					deck={deck.title}
+				/>
+			)
+		} else {
+			return (
+				<Card 
+					currentQuestion={currentQuestion}
+					showAnswer={showAnswer}
+					deck={deck}
+					changeCard={(result) => this.changeCard(result)}
+					flipCard={() => this.flipCard()}
+				/>
+			)
+		}
+
+		
 	}
 }
 
