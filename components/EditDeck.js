@@ -8,7 +8,8 @@ import {
 	ScrollView,
 	TouchableOpacity,
 	KeyboardAvoidingView,
-	Keyboard
+	Keyboard,
+	Alert
 } from 'react-native'
 import SubmitBtn from './SubmitBtn'
 import { modifyDeck, deleteCard } from '../utils/api'
@@ -16,6 +17,7 @@ import { removeCard, receiveDecks, editDeck } from '../actions'
 import { white, gray, red } from '../utils/colors'
 import { connect } from 'react-redux'
 import { MaterialIcons } from '@expo/vector-icons'
+
 
 class EditDeck extends Component {
 
@@ -43,13 +45,23 @@ class EditDeck extends Component {
 
 	remove = (deck, question) => {
 		const { dispatch, navigation} = this.props
-		const { deckTitle } = this.props
 
 		deleteCard(deck, question)
 			.then( () => {
 				navigation.navigate('Home')
 				dispatch(removeCard(deck, question))
-
+			})
+			.then( () => {
+				Alert.alert(
+					'Done', 
+					'The question has been deleted',
+					[
+						{
+							text: 'Ok',
+							onPress: () => navigation.navigate('Deck', { title: deck })
+						}
+					]
+				)
 			})
 	}
 
