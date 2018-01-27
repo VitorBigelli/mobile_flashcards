@@ -5,12 +5,13 @@ import { white, red, gray } from '../utils/colors'
 import Deck from './Deck'
 import { receiveDecks } from '../actions'
 import { connect } from 'react-redux'
+import { AppLoading } from 'expo'
 
 class Decks extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { decks: {}, }
+    this.state = { decks: {}, ready: false }
   }
 
   componentDidMount() {
@@ -21,7 +22,8 @@ class Decks extends Component {
       initAPI()
         .then( (data) => {
           this.setState( (state) => ({
-            decks: data
+            decks: data,
+            ready: true,
           }))
         })
         .then( () => dispatch(receiveDecks(this.state.decks)))
@@ -29,7 +31,8 @@ class Decks extends Component {
       getDecks()
         .then( (data) => {
           this.setState( (state) => ({
-            decks: data
+            decks: data,
+            ready: true,
           })
         )})
     }
@@ -40,13 +43,17 @@ class Decks extends Component {
   }
 
   render() {
-    const { decks } = this.state
+    const { decks, ready } = this.state
+
+    if (ready === false) {
+      return <AppLoading />
+    }
 
     return (
       <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'stretch'}}>
 
         { decks &&
-            Object.keys(decks).map( (deck) => {
+            Object.keys(decks).sort().map( (deck) => {
 
               return (
                   <TouchableOpacity 
