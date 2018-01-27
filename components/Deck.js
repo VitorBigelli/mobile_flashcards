@@ -21,16 +21,6 @@ class Deck extends Component {
 
 		return {
 			title: title,
-			params: navigation.state.params,
-			headerLeft: (
-				<TouchableOpacity
-					style={styles.back}
-					onPress={ ()=> navigation.navigate('Home', { params: navigation.state.params })}
-				>
-					<MaterialCommunityIcons name='cards' size={30} color={white} />
-					{ (Platform.OS === 'ios') && <Text style={styles.backText}> Decks </Text> }
-				</TouchableOpacity>
-			)
 		}
 	}
 
@@ -67,7 +57,7 @@ class Deck extends Component {
 
 	render() {
 	  	const { title, deck, navigation } = this.props
-	  	console.log(title)
+	  	console.log(deck)
 	  	console.log(navigation.state.params.title)
 		return (
 			<View style={styles.container}>

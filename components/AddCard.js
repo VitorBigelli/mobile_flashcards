@@ -45,7 +45,7 @@ class AddCard extends Component {
 
 	submitCard = () => {
 		const { question, answer } = this.state
-		const { deck, dispatch } = this.props
+		const { deck, dispatch, navigation } = this.props
 
 		const card = {
 			question,
@@ -58,6 +58,7 @@ class AddCard extends Component {
 			addCardToDeck( deck )
 				.then( (data) => dispatch(addCard(deck.title, card)))
 				.then( () => {
+					navigation.navigate( 'Deck', { title: deck.title })
 					this.setState( () => ({
 						question: '', 
 						answer: '',
@@ -70,11 +71,11 @@ class AddCard extends Component {
 						[
 							{ 
 								text: 'Add another card', 
-								onPress: () => this.render()
+								onPress: () => navigation.navigate( 'AddCard', { title: navigation.state.params.title, deck: deck })
 							}, 
 							{
 								text: 'Ok', 
-								onPress: () => this.props.navigation.navigate('Deck', {title: deck.title })
+								onPress: () => {}
 							}
 						]
 					)
@@ -96,7 +97,6 @@ class AddCard extends Component {
 
 	render() {
 		const { question, answer } = this.state
-	  	console.log(this.props.navigation)
 
 		return(
 			<KeyboardAvoidingView behavior='padding' style={styles.container} > 

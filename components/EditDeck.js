@@ -43,11 +43,12 @@ class EditDeck extends Component {
 
 	remove = (deck, question) => {
 		const { dispatch, navigation} = this.props
+		const { deckTitle } = this.props
 
 		deleteCard(deck, question)
 			.then( () => {
+				navigation.navigate('Home')
 				dispatch(removeCard(deck, question))
-				navigation.navigate('EditDeck', { title: deckTitle })
 
 			})
 	}
@@ -73,7 +74,6 @@ class EditDeck extends Component {
 		return (
 			<KeyboardAvoidingView behavior='padding' style={styles.container} > 
 				<View style={styles.deckTitle} >
-					<Text style={{fontSize: 20}}> Deck Title: </Text>
 					<TextInput 
 						value={deckTitle}
 						onChangeText={ (input) => this.handleTextChange(input)}
@@ -138,6 +138,9 @@ const styles = StyleSheet.create({
 		padding: 5, 
 		borderWidth: 1, 
 		borderColor: gray,
+		alignItems: 'center',
+		fontSize: 20,
+		alignSelf: 'center'
 	},
 	deckTitle: {
 		alignItems: 'center',
@@ -156,9 +159,11 @@ const styles = StyleSheet.create({
 		marginLeft: 10,
 		marginRight: 10,
 		marginTop: 10,
+		width: 300,
 	},
 	questionsList: {
 		flex: 1,
+		width: 250
 	},
 	questionsItemHeader: {
 		backgroundColor: gray,

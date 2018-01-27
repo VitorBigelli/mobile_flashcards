@@ -114,7 +114,6 @@ export function modifyDeck(deck, newDeck) {
               title: newDeck,
               questions: data[deck].questions
             }
-            
             delete data[deck]
             AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
           })
