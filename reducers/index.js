@@ -1,4 +1,4 @@
-import { RECEIVE_DECKS, ADD_DECK, ADD_CARD_TO_DECK } from '../actions'
+import { RECEIVE_DECKS, ADD_DECK, ADD_CARD_TO_DECK, REMOVE_DECK } from '../actions'
 
 function decks (state = {}, action) {
 	switch(action.type) {
@@ -18,7 +18,15 @@ function decks (state = {}, action) {
 				...state.decks, 
 				[action.deck]: action.card
 			}
-		default: 
+		case REMOVE_DECK: 
+			let decks = state.decks
+			delete decks[action.deck]
+
+			return {
+				...state, 
+				...decks
+			}
+		default:
 			return state
 	}
 }

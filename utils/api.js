@@ -86,3 +86,12 @@ export function saveDeckTitle(title) {
 export function addCardToDeck(deck) {
 	return AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify({ [deck.title]: deck }))
 }
+
+export function deleteDeck(deck) {
+  return AsyncStorage.getItem(DECKS_STORAGE_KEY)
+          .then( (result) => {
+            let data = JSON.parse(result)
+            delete data[deck]
+            AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
+          })
+}
