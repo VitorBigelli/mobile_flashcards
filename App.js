@@ -20,6 +20,7 @@ import reducer from './reducers'
 import AddCard from './components/AddCard'
 import Quiz from './components/Quiz'
 import QuizResult from './components/QuizResult'
+import EditDeck from './components/EditDeck'
 import { setLocalNotification } from './utils/helpers'
 
 const store = createStore(reducer)
@@ -93,6 +94,15 @@ const MainNavigator = StackNavigator({
   },
   QuizResult: {
     screen: QuizResult,
+    navigationOptions: {
+      headerTintColor: white, 
+      headerStyle: {
+        backgroundColor: red,
+      }
+    }
+  }, 
+  EditDeck: {
+    screen: EditDeck,
     navigationOptions: {
       headerTintColor: white, 
       headerStyle: {

@@ -16,7 +16,6 @@ import SubmitBtn from './SubmitBtn'
 
 class Deck extends Component {
 
-
 	static navigationOptions = ({ navigation }) => {
 		const { title } = navigation.state.params
 
@@ -33,6 +32,12 @@ class Deck extends Component {
 				</TouchableOpacity>
 			)
 		}
+	}
+
+	edit = (deck) => {
+		const { navigation } = this.props
+
+		navigation.navigate( 'EditDeck', { title: deck })
 	}
 
 	deleteDeck = (deck) => {
@@ -62,12 +67,18 @@ class Deck extends Component {
 
 	render() {
 	  	const { title, deck, navigation } = this.props
-
+	  	console.log(title)
+	  	console.log(navigation.state.params.title)
 		return (
 			<View style={styles.container}>
 			{ deck && 
 				<View style={styles.container}>
 					<View style={styles.options}>
+						<TouchableOpacity
+							onPress={() => this.edit(deck.title)}
+						>
+							<MaterialIcons name='edit' size={30} color={gray} />
+						</TouchableOpacity>
 						<TouchableOpacity
 							onPress={() => this.deleteDeck(deck.title)}
 						>
@@ -126,6 +137,7 @@ const styles = StyleSheet.create({
 	},
 	options: {
 		alignSelf: 'flex-end',
+		flexDirection: 'row',
 	},
 	buttonsContainer: {
 		flex: 1, 

@@ -18,6 +18,8 @@ class Decks extends Component {
     const { dispatch } = this.props
     const { decks } = this.state 
 
+   // AsyncStorage.removeItem(DECKS_STORAGE_KEY)
+
     if (decks != {}) {
       initAPI()
         .then( (data) => {
@@ -44,7 +46,7 @@ class Decks extends Component {
 
   render() {
     const { decks, ready } = this.state
-
+    
     if (ready === false) {
       return <AppLoading />
     }

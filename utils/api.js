@@ -95,3 +95,27 @@ export function deleteDeck(deck) {
             AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
           })
 }
+
+export function deleteCard(deck, index) {
+  return AsyncStorage.getItem(DECKS_STORAGE_KEY)
+          .then( (result) => {
+            let data = JSON.parse(result)
+            delete data[deck]['questions'][index]
+            data[deck].questions = data[deck]['questions'].filter( (item) => item != null )
+            AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
+          })
+}
+
+export function modifyDeck(deck, newDeck) {
+  return AsyncStorage.getItem(DECKS_STORAGE_KEY)
+          .then( (result) => {
+            let data = JSON.parse(result)
+            data[newDeck] = {
+              title: newDeck,
+              questions: data[deck].questions
+            }
+            
+            delete data[deck]
+            AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(data))
+          })
+}
