@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 import SubmitBtn from './SubmitBtn'
 import Card from './Card'
 import { red, lightGreen, lightRed, green, white} from '../utils/colors'
-
+import { clearLocalNotifications, setLocalNotification } from '../utils/helpers'
 
 class Quiz extends Component {
 
@@ -30,6 +30,11 @@ class Quiz extends Component {
 		return {
 			title: title + ' Quiz', 
 		}
+	}
+
+	componentDidMount() {
+		clearLocalNotifications() 
+			.then(setLocalNotification())
 	}
 
 	flipCard = () => {

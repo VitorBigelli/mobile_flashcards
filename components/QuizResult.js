@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { gray, white } from '../utils/colors'
+import { clearLocalNotifications, setLocalNotification } from '../utils/helpers'
 
 class QuizResult extends Component{
 
@@ -16,6 +17,11 @@ class QuizResult extends Component{
 		return {
 			title: deck + ' Quiz Result', 
 		}
+	}
+
+	componentDidMount() {
+		clearLocalNotifications() 
+			.then(setLocalNotification())
 	}
 
 	render() {

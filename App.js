@@ -20,13 +20,14 @@ import reducer from './reducers'
 import AddCard from './components/AddCard'
 import Quiz from './components/Quiz'
 import QuizResult from './components/QuizResult'
+import { setLocalNotification } from './utils/helpers'
 
 const store = createStore(reducer)
 
 function FlashcardsStatusBar ({backgroundColor, barStyle, ...props}) {
   return (
     <View style={{backgroundColor, height: Constants.statusBarHeight }} >
-      <StatusBar translucent backgroundColor={backgroundColor} barStyle='dark-content' {...props} />
+      <StatusBar translucent backgroundColor={backgroundColor} barStyle={barStyle} {...props} />
     </View>
   ) 
 }
@@ -102,11 +103,18 @@ const MainNavigator = StackNavigator({
 })
 
 export default class App extends React.Component {
+
+  componentDidMount() {
+    setLocalNotification()    
+  }
+
   render() {
     return (
       <Provider store={store}>
         <View style={{flex: 1}} > 
-        <FlashcardsStatusBar  backgroundColor={white} barStyle='light-content' />
+        <FlashcardsStatusBar  
+          backgroundColor={Platform.OS === 'ios' ? red : white} 
+          barStyle={Platform.OS === 'ios' ? 'light-content' : 'dark-content'} />
           <MainNavigator />
         </View>
       </Provider>

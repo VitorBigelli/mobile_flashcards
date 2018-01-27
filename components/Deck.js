@@ -10,7 +10,7 @@ import {
 import { connect } from 'react-redux'
 import { deleteDeck } from '../utils/api'
 import { removeDeck } from '../actions'
-import { gray, lightGray, white } from '../utils/colors'
+import { gray, lightGray, white, red } from '../utils/colors'
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import SubmitBtn from './SubmitBtn'
 
@@ -71,7 +71,7 @@ class Deck extends Component {
 						<TouchableOpacity
 							onPress={() => this.deleteDeck(deck.title)}
 						>
-							<MaterialIcons name='delete' size={30} color={gray} />
+							<MaterialIcons name='delete' size={30} color={red} />
 						</TouchableOpacity>
 					</View>
 					<View  style={styles.headerContainer} >
