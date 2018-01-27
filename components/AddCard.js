@@ -74,7 +74,7 @@ class AddCard extends Component {
 							}, 
 							{
 								text: 'Ok', 
-								onPress: () => this.props.navigation.navigate('Home')
+								onPress: () => this.props.navigation.navigate('Deck', {title: deck.title })
 							}
 						]
 					)
