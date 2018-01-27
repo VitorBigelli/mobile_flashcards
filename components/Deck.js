@@ -57,8 +57,7 @@ class Deck extends Component {
 
 	render() {
 	  	const { title, deck, navigation } = this.props
-	  	console.log(deck)
-	  	console.log(navigation.state.params.title)
+
 		return (
 			<View style={styles.container}>
 			{ deck && 

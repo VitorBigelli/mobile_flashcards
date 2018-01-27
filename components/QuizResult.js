@@ -15,7 +15,7 @@ class QuizResult extends Component{
 		const { deck } = navigation.state.params
 
 		return {
-			title: deck + ' Quiz Result', 
+			title: deck + ' Quiz Result'
 		}
 	}
 
@@ -43,7 +43,7 @@ class QuizResult extends Component{
 					style={styles.btn}
 					onPress={() => navigation.navigate(
 						'Quiz',
-						{title: deck.title}
+						{title: deck.title }
 					)}
 				>
 					<Text style={styles.btnText} > Restart Quiz </Text>
