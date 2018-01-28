@@ -43,6 +43,20 @@ class AddCard extends Component {
 		}))
 	}
 
+	toAddCard = () => {
+		const { navigation, deck } = this.props 
+
+		const reset = NavigationActions.reset({
+			index: 2,
+			actions: [
+				NavigationActions.navigate({routeName: 'Home'}),
+				NavigationActions.navigate({routeName: 'Deck', params: { title: deck.title} }), 
+				NavigationActions.navigate({routeName: 'AddCard', params: { title: 'Add Card', deck: deck.title} })
+			]
+		})
+		navigation.dispatch(reset)
+	}
+
 	submitCard = () => {
 		const { question, answer } = this.state
 		const { deck, dispatch, navigation } = this.props
@@ -71,7 +85,7 @@ class AddCard extends Component {
 						[
 							{ 
 								text: 'Add another card', 
-								onPress: () => navigation.navigate( 'AddCard', { title: navigation.state.params.title, deck: deck })
+								onPress: () => this.toAddCard()
 							}, 
 							{
 								text: 'Ok', 
@@ -141,7 +155,7 @@ function mapStateToProps(state, { navigation })  {
 	const { deck } = navigation.state.params
 
 	return {
-		deck: deck,
+		deck: state.decks[deck],
 	}
 }
 

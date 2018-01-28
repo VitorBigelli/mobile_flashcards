@@ -40,13 +40,10 @@ export function initAPI() {
   return AsyncStorage.getItem(DECKS_STORAGE_KEY)
             .then( (result) => {
               if (result) {
-                console.log('Getting Decks')
                 return getDecks()
               }
               else {
-                console.log('Setting default decks')
                 setDefaultDecks()
-                console.log('Getting Decks')
                 return getDecks()
               }
             })

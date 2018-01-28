@@ -5,7 +5,7 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 	Platform,
-	Alert
+	Alert,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { deleteDeck } from '../utils/api'
@@ -13,6 +13,7 @@ import { removeDeck } from '../actions'
 import { gray, lightGray, white, red } from '../utils/colors'
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import SubmitBtn from './SubmitBtn'
+import { AppLoading } from 'expo'
 
 class Deck extends Component {
 
@@ -38,8 +39,7 @@ class Deck extends Component {
 			'Sure you want delete the ' + deck + ' deck', 
 			[
 				{
-					text: 'Cancel', 
-					onPress: () => this.render()
+					text: 'Cancel'
 				},
 				{
 					text: 'Confirm', 
@@ -85,7 +85,7 @@ class Deck extends Component {
 							color={gray}
 							handle={ () => navigation.navigate(
 								'AddCard', 
-								{'title': 'Add Card', deck: deck })
+								{'title': 'Add Card', deck: deck.title })
 							}
 							text={'Create New Question'}
 						/> 

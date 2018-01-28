@@ -9,47 +9,22 @@ import { AppLoading } from 'expo'
 
 class Decks extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = { decks: {}, ready: false }
-  }
-
   componentDidMount() {
-    const { dispatch } = this.props
-    const { decks } = this.state 
+    const { dispatch, decks } = this.props
 
    // AsyncStorage.removeItem(DECKS_STORAGE_KEY)
 
-    if (decks != {}) {
+    if (!decks) {
       initAPI()
-        .then( (data) => {
-          this.setState( (state) => ({
-            decks: data,
-            ready: true,
-          }))
-        })
-        .then( () => dispatch(receiveDecks(this.state.decks)))
+        .then( (data) => dispatch(receiveDecks(data)))
     } else {
       getDecks()
-        .then( (data) => {
-          this.setState( (state) => ({
-            decks: data,
-            ready: true,
-          })
-        )})
+        .then( (data) => dispatch(receiveDecks(data)))
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextState.decks != this.state.decks
   }
 
   render() {
-    const { decks, ready } = this.state
-    
-    if (ready === false) {
-      return <AppLoading />
-    }
+    const { decks } = this.props
 
     return (
       <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'stretch'}}>
@@ -104,4 +79,10 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect()(Decks)
+function mapStateToProps(state) {
+  return {
+    decks: state.decks
+  }
+}
+
+export default connect(mapStateToProps)(Decks)

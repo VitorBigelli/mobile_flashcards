@@ -15,8 +15,9 @@ import { gray, white } from '../utils/colors'
 import { NavigationActions } from 'react-navigation'
 import SubmitBtn from './SubmitBtn'
 import { connect } from 'react-redux'
+import { addDeck } from '../actions'
 
-class NewDeck extends Component {
+class AddDeck extends Component {
 
 	constructor(props) {
 		super(props)
@@ -25,14 +26,28 @@ class NewDeck extends Component {
 
 	submitDeck = () => {
 		const { input } = this.state
-
+		const { dispatch, navigation } = this.props
+ 
 		if (input) {
+			const deck = {
+				title: input, 
+				questions: []
+			}
+
 			saveDeckTitle(input)
+				.then( () => dispatch(addDeck(deck)))
 				.then( () => {
 					this.setState( () => ({
 						input: '',
 					}))
-					this.props.navigation.navigate('Home')
+					const reset = NavigationActions.reset({
+						index: 1,
+						actions: [
+							NavigationActions.navigate({routeName: 'Home'}),
+							NavigationActions.navigate({routeName: 'Deck', params: { title: deck.title} })
+						]
+					})
+					navigation.dispatch(reset)
 				})
 		}
 		else {
@@ -40,11 +55,9 @@ class NewDeck extends Component {
 				'Required field',
 				'You need to fill all the fields in order to submit a new card', 
 				[
-					{text: 'Ok', onPress: () => this.render() }
+					{text: 'Ok'}
 				]
 			)
-
-			this.props.navigation.dispatch(NavigationActions.back({key: 'AddDeck'}))
 		}
 
 		Keyboard.dismiss()
@@ -95,4 +108,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default connect()(NewDeck)
+export default connect()(AddDeck)

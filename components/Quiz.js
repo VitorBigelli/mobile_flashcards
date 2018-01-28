@@ -60,20 +60,14 @@ class Quiz extends Component {
 			default:
 				return
 		}
+
 	}
 
 	render() {
 		const { deck, navigation } = this.props
 		const { currentQuestion, showAnswer, score } = this.state
 
-		if (currentQuestion === deck.questions.length) {
-			return (
-				<QuizResult 
-					score={score}
-					deck={deck.title}
-				/>
-			)
-		} else {
+		if (currentQuestion !== deck.questions.length) {
 			return (
 				<Card 
 					currentQuestion={currentQuestion}
@@ -83,8 +77,15 @@ class Quiz extends Component {
 					flipCard={() => this.flipCard()}
 				/>
 			)
-		}
-
+		} 
+		return (
+			<View style={styles.container}>
+				<SubmitBtn 
+					text={'See result'}
+					handle={ () => navigation.navigate('QuizResult', { title: 'Result', score, deck: deck.title })}
+				/>
+			</View>
+		)
 		
 	}
 }
@@ -92,68 +93,9 @@ class Quiz extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		alignItems: 'stretch',
-	},
-	scoreContainer: {
-		alignSelf: 'flex-start',
-		height: 40,
-		width: 50,
-	}, 
-	score: {
-		fontSize: 18,
-	}, 
-	questionContainer: {
 		alignItems: 'center',
-		justifyContent: 'center',
-		height: 250,
-		marginTop: 30,
-	}, 
-	question: {
-		fontSize: 42,
-		maxHeight: 200,
-	},
-	answer: {
-		fontSize: 25, 
-	},
-	flipCardBtnContainer: {
-		alignItems: 'center',
-		justifyContent: 'center', 
-		height: 50,
-	},
-	flipCardBtn: {
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	flipBtnText: {
-		fontSize: 15,
-		color: red,
-	},
-	buttonsContainer: {
-		alignItems: 'center',
-		justifyContent: 'flex-start',
-	},
-	button: {
-		height: 50, 
-		width: 150, 
-		borderRadius: 7, 
-		padding: 8,
-		marginBottom: 5,
-		alignItems: 'center',
-		justifyContent: 'center',
-	}, 
-	correctBtn: {
-		backgroundColor: green,
-	},
-	correctBtnText: {
-		fontSize: 15,
-		color: lightGreen,
-	},
-	incorrectBtn: {
-		backgroundColor: red,	}, 
-	incorrectBtnText: {
-		fontSize: 15,
-		color: lightRed,
-	}, 
+		justifyContent: 'center'
+	}
 })
 
 function mapStateToProps(state, { navigation }) {

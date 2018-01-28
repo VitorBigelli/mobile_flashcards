@@ -5,6 +5,7 @@ import {
 	StyleSheet, 
 	TouchableOpacity, 
 } from 'react-native'
+import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { gray, white } from '../utils/colors'
 import { clearLocalNotifications, setLocalNotification } from '../utils/helpers'
@@ -15,13 +16,42 @@ class QuizResult extends Component{
 		const { deck } = navigation.state.params
 
 		return {
-			title: deck + ' Quiz Result'
+			title: deck + ' Quiz Result',
+			headerLeft: null,
 		}
 	}
 
 	componentDidMount() {
 		clearLocalNotifications() 
 			.then(setLocalNotification())
+	}
+
+	restart = () => {
+		const { deck, navigation } = this.props
+
+		const reset = NavigationActions.reset({
+			index: 2,
+			actions: [
+				NavigationActions.navigate({routeName: 'Home'}),
+				NavigationActions.navigate({routeName: 'Deck', params: { title: deck.title } }),
+				NavigationActions.navigate({routeName: 'Quiz', params: { title: deck.title } })
+			]
+		})
+		navigation.dispatch(reset)	
+	}
+
+	goToDeck = () => {
+		const { deck, navigation } = this.props
+
+		const reset = NavigationActions.reset({
+			index: 1,
+			actions: [
+				NavigationActions.navigate({routeName: 'Home'}),
+				NavigationActions.navigate({routeName: 'Deck', params: { title: deck.title } }),
+			]
+		})
+
+		navigation.dispatch(reset)
 	}
 
 	render() {
@@ -41,16 +71,13 @@ class QuizResult extends Component{
 				</Text> 
 				<TouchableOpacity
 					style={styles.btn}
-					onPress={() => navigation.navigate(
-						'Quiz',
-						{title: deck.title }
-					)}
+					onPress={() => this.restart()}
 				>
 					<Text style={styles.btnText} > Restart Quiz </Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					style={[styles.btn, {backgroundColor: gray}]}
-					onPress={() => navigation.navigate('Deck', { title: deck.title })}
+					onPress={ () => this.goToDeck()}
 				>
 					<Text style={[styles.btnText, { color: white}]} > Back to Deck </Text>
 				</TouchableOpacity>
@@ -99,7 +126,9 @@ const styles = StyleSheet.create({
 	}
 })
 
-function mapStateToProps(state, { score, deck }) {
+function mapStateToProps(state, { navigation }) {
+	const { score, deck } = navigation.state.params
+
 	return {
 		score, 
 		deck: state.decks[deck]

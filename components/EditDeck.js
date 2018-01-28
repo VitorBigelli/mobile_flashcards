@@ -17,6 +17,7 @@ import { removeCard, receiveDecks, editDeck } from '../actions'
 import { white, gray, red } from '../utils/colors'
 import { connect } from 'react-redux'
 import { MaterialIcons } from '@expo/vector-icons'
+import { NavigationActions } from 'react-navigation'
 
 
 class EditDeck extends Component {
@@ -42,13 +43,25 @@ class EditDeck extends Component {
 			deckTitle: input
 		}))
 	}
+	
+	refresh = () => {
+		const { navigation, deck } = this.props 
+
+		const reset = NavigationActions.reset({
+			index: 1,
+			actions: [
+				NavigationActions.navigate({routeName: 'Home'}),
+				NavigationActions.navigate({routeName: 'Deck', params: { title: deck.title} }), 
+			]
+		})
+		navigation.dispatch(reset)
+	}
 
 	remove = (deck, question) => {
 		const { dispatch, navigation} = this.props
 
 		deleteCard(deck, question)
 			.then( () => {
-				navigation.navigate('Home')
 				dispatch(removeCard(deck, question))
 			})
 			.then( () => {
@@ -58,7 +71,7 @@ class EditDeck extends Component {
 					[
 						{
 							text: 'Ok',
-							onPress: () => navigation.navigate('Deck', { title: deck })
+							onPress: () => this.refresh()
 						}
 					]
 				)
